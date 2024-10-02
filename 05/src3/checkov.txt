@@ -1,0 +1,65 @@
+   ___| |__   ___  ___| | _______   __
+  / __| '_ \ / _ \/ __| |/ / _ \ \ / /
+ | (__| | | |  __/ (__|   < (_) \ V / 
+  \___|_| |_|\___|\___|_|\_\___/ \_/  
+                                      
+By Prisma Cloud | version: 3.1.63 
+
+terraform scan results:
+
+Passed checks: 2, Failed checks: 5, Skipped checks: 0
+
+Check: CKV_YC_4: "Ensure compute instance does not have serial console enabled."
+        PASSED for resource: module.test-vm.yandex_compute_instance.vm[0]
+        File: /.external_modules/github.com/udjin10/yandex_compute_instance/main/main.tf:24-73
+        Calling File: /main.tf:37-53
+Check: CKV_YC_4: "Ensure compute instance does not have serial console enabled."
+        PASSED for resource: module.test-vm.yandex_compute_instance.vm[1]
+        File: /.external_modules/github.com/udjin10/yandex_compute_instance/main/main.tf:24-73
+        Calling File: /main.tf:37-53
+Check: CKV_YC_2: "Ensure compute instance does not have public IP."
+        FAILED for resource: module.test-vm.yandex_compute_instance.vm[0]
+        File: /.external_modules/github.com/udjin10/yandex_compute_instance/main/main.tf:24-73
+        Calling File: /main.tf:37-53
+
+                Code lines for this resource are too many. Please use IDE of your choice to review the file.
+Check: CKV_YC_11: "Ensure security group is assigned to network interface."
+        FAILED for resource: module.test-vm.yandex_compute_instance.vm[0]
+        File: /.external_modules/github.com/udjin10/yandex_compute_instance/main/main.tf:24-73
+        Calling File: /main.tf:37-53
+
+                Code lines for this resource are too many. Please use IDE of your choice to review the file.
+Check: CKV_YC_2: "Ensure compute instance does not have public IP."
+        FAILED for resource: module.test-vm.yandex_compute_instance.vm[1]
+        File: /.external_modules/github.com/udjin10/yandex_compute_instance/main/main.tf:24-73
+        Calling File: /main.tf:37-53
+
+                Code lines for this resource are too many. Please use IDE of your choice to review the file.
+Check: CKV_YC_11: "Ensure security group is assigned to network interface."
+        FAILED for resource: module.test-vm.yandex_compute_instance.vm[1]
+        File: /.external_modules/github.com/udjin10/yandex_compute_instance/main/main.tf:24-73
+        Calling File: /main.tf:37-53
+
+                Code lines for this resource are too many. Please use IDE of your choice to review the file.
+Check: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+        FAILED for resource: test-vm
+        File: /main.tf:37-53
+        Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/supply-chain-policies/terraform-policies/ensure-terraform-module-sources-use-git-url-with-commit-hash-revision
+
+                37 | module "test-vm" {
+                38 |   source          = "git::https://github.com/udjin10/yandex_compute_instance.git?ref=main"
+                39 |   env_name        = "develop"
+                40 |   network_id      = module.vpc_dev.network_id
+                41 |   subnet_zones    = ["ru-central1-a"]
+                42 |   subnet_ids      = [module.vpc_dev.subnet_id]
+                43 |   instance_name   = "web"
+                44 |   instance_count  = 2
+                45 |   image_family    = "ubuntu-2004-lts"
+                46 |   public_ip       = true
+                47 |   
+                48 |   metadata = {
+                49 |       user-data          = data.template_file.cloudinit.rendered #Для демонстрации №3
+                50 |       serial-port-enable = 1
+                51 |   }
+                52 | 
+                53 | }
